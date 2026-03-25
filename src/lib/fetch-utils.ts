@@ -1,4 +1,8 @@
-const BASE = "http://localhost:5000";
+/** Public URL of your json-server API. Set in Netlify: Site → Environment variables → VITE_API_URL */
+const BASE = (import.meta.env.VITE_API_URL || "http://localhost:5000").replace(
+  /\/$/,
+  ""
+);
 
 const delay = (ms: number) =>
   new Promise((res) => setTimeout(res, ms));
