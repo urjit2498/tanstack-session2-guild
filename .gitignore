@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Build
+dist/
+
+# Local env (never commit — Netlify secret scan fails on these)
+.env
+.env.*
+!.env.example
+
+# Logs / OS
+*.log
+.DS_Store
+
+# TypeScript
+*.tsbuildinfo

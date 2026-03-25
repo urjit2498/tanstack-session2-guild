@@ -1,4 +1,4 @@
-/** Public URL of your json-server API. Set in Netlify: Site → Environment variables → VITE_API_URL */
+/** JSON-server base URL. Local default below; production: set in Netlify env (see README). */
 const BASE = (import.meta.env.VITE_API_URL || "http://localhost:5000").replace(
   /\/$/,
   ""
