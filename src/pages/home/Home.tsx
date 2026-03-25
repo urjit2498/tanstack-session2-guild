@@ -366,6 +366,7 @@ export function Home() {
           }}
         >
           <a
+            className="ui-outline-btn"
             href="https://tanstack.com/query/latest"
             target="_blank"
             rel="noopener noreferrer"
@@ -377,6 +378,7 @@ export function Home() {
               borderRadius: 999,
               background: '#0b0b10',
               color: '#ffffff',
+              border: '1px solid color-mix(in srgb, var(--text) 18%, var(--border2))',
               textDecoration: 'none',
               fontSize: 14,
               fontWeight: 600,
