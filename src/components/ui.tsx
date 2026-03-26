@@ -1,5 +1,4 @@
 import { type ReactNode } from "react";
-import { useNavigation } from "../navigation/NavigationContext";
 
 /* ──────────────── Code Block ──────────────── */
 interface CodeBlockProps {
@@ -312,11 +311,10 @@ export function NavButton({
   direction?: "next" | "prev";
   color?: string;
 }) {
-  const navigation = useNavigation();
   return (
-    <button
-      type="button"
+    <a
       className={direction === "prev" ? "ui-outline-btn" : undefined}
+      href={to}
       style={{
         display: "inline-flex",
         alignItems: "center",
@@ -326,13 +324,13 @@ export function NavButton({
         color: direction === "next" ? "#fff" : "#888096",
         border: `1px solid ${direction === "next" ? color : "#ffffff22"}`,
         borderRadius: 10,
+        textDecoration: "none",
         fontSize: 14,
         fontWeight: 600,
         fontFamily: "var(--sans)",
         cursor: "pointer",
         transition: "opacity 0.15s, transform 180ms ease, background-color 180ms ease, border-color 180ms ease",
       }}
-      onClick={() => navigation?.navigateTo(to)}
       onMouseOver={(e) =>
         (e.currentTarget.style.opacity = "0.8")
       }
@@ -340,6 +338,6 @@ export function NavButton({
     >
       {direction === "prev" && "←"} {label}{" "}
       {direction === "next" && "→"}
-    </button>
+    </a>
   );
 }

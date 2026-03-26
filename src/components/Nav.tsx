@@ -1,15 +1,15 @@
 import { Menu, Moon, Sun, X } from 'lucide-react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { useNavigation } from '../navigation/NavigationContext';
+import { useLocation } from 'react-router-dom';
 
 const LINKS = [
-  { id: 'home', to: '/', label: 'Home' },
-  { id: 'dependent', to: '/dependent-queries', label: '01 · Dependent' },
-  { id: 'parallel', to: '/parallel-queries', label: '02 · Parallel' },
-  { id: 'mutations', to: '/advanced-mutations', label: '03 · Mutations' },
-  { id: 'prefetching', to: '/prefetching', label: '04 · Prefetching' },
-  { id: 'suspense', to: '/suspense-mode', label: '05 · Suspense' },
+  { path: '/', label: 'Home' },
+  { path: '/dependent-queries', label: '01 · Dependent' },
+  { path: '/parallel-queries', label: '02 · Parallel' },
+  { path: '/advanced-mutations', label: '03 · Mutations' },
+  { path: '/prefetching', label: '04 · Prefetching' },
+  { path: '/suspense-mode', label: '05 · Suspense' },
 ];
 
 type Theme = 'dark' | 'light';
@@ -31,7 +31,7 @@ function applyTheme(theme: Theme) {
 }
 
 export function Nav() {
-  const navigation = useNavigation();
+  const { pathname } = useLocation();
   const queryClient = useQueryClient();
   const [isThemeIconAnimating, setIsThemeIconAnimating] = useState(false);
   const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 900px)').matches);
@@ -58,7 +58,7 @@ export function Nav() {
 
   useEffect(() => {
     setIsMenuOpen(false);
-  }, [navigation?.activeSection, isMobile]);
+  }, [pathname, isMobile]);
 
   const toggleTheme = () => {
     setIsThemeIconAnimating(false);
@@ -167,19 +167,17 @@ export function Nav() {
             }}
           >
             {LINKS.map((link) => {
-              const active = navigation?.activeSection === link.id;
+              const active = pathname === link.path;
               return (
-                <button
-                  key={link.id}
-                  type="button"
-                  onClick={() => navigation?.navigateTo(link.to)}
+                <a
+                  key={link.path}
+                  href={link.path}
                   style={{
                     padding: '8px 10px',
                     borderRadius: 8,
                     fontSize: 13,
                     fontWeight: 500,
                     textDecoration: 'none',
-                    cursor: 'pointer',
                     color: active ? 'var(--text)' : 'var(--muted)',
                     background: active
                       ? 'color-mix(in srgb, var(--accent) 22%, transparent)'
@@ -188,10 +186,9 @@ export function Nav() {
                       ? '1px solid color-mix(in srgb, var(--accent) 45%, transparent)'
                       : '1px solid var(--border)',
                   }}
-                  aria-current={active ? 'page' : undefined}
                 >
                   {link.label}
-                </button>
+                </a>
               );
             })}
             <a
@@ -249,19 +246,17 @@ export function Nav() {
       <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
         <div style={{ display: 'flex', gap: 2, flexWrap: 'nowrap' }}>
           {LINKS.map((link) => {
-              const active = navigation?.activeSection === link.id;
+            const active = pathname === link.path;
             return (
-                <button
-                key={link.id}
-                  type="button"
-                  onClick={() => navigation?.navigateTo(link.to)}
+              <a
+                key={link.path}
+                href={link.path}
                 style={{
                   padding: '6px 14px',
                   borderRadius: 8,
                   fontSize: 13,
                   fontWeight: 500,
                   textDecoration: 'none',
-                    cursor: 'pointer',
                   color: active ? 'var(--text)' : 'var(--muted)',
                   background: active
                     ? 'color-mix(in srgb, var(--accent) 22%, transparent)'
@@ -272,10 +267,9 @@ export function Nav() {
                   transition: 'all 0.15s',
                   whiteSpace: 'nowrap',
                 }}
-                  aria-current={active ? 'page' : undefined}
               >
                 {link.label}
-                </button>
+              </a>
             );
           })}
         </div>

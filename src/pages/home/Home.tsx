@@ -1,47 +1,45 @@
 import { useEffect, useState } from 'react';
-import { useNavigation } from '../../navigation/NavigationContext';
 
 const SESSIONS = [
   {
     number: '01',
     title: 'Dependent Queries',
     subtitle: 'Chain queries with the enabled flag',
-    to: '/dependent-queries',
+    path: '/dependent-queries',
     color: '#7c6af5',
   },
   {
     number: '02',
     title: 'Parallel Queries',
     subtitle: 'useQueries for dynamic lists',
-    to: '/parallel-queries',
+    path: '/parallel-queries',
     color: '#2dd4bf',
   },
   {
     number: '03',
     title: 'Advanced Mutations',
     subtitle: 'Full lifecycle & rollback strategies',
-    to: '/advanced-mutations',
+    path: '/advanced-mutations',
     color: '#f59e0b',
   },
   {
     number: '04',
     title: 'Prefetching',
     subtitle: 'Make your app feel instant',
-    to: '/prefetching',
+    path: '/prefetching',
     color: '#22c55e',
   },
   {
     number: '05',
     title: 'Suspense Mode',
     subtitle: 'Declarative loading states',
-    to: '/suspense-mode',
+    path: '/suspense-mode',
     color: '#f43f5e',
   },
 ];
 
 export function Home() {
   const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 768px)').matches);
-  const navigation = useNavigation();
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(max-width: 768px)');
@@ -191,8 +189,9 @@ export function Home() {
         }}
       >
         {SESSIONS.map((s) => (
-          <div
+          <a
             key={s.number}
+            href={s.path}
             style={{
               display: 'grid',
               gridTemplateColumns: isMobile ? '1fr auto' : 'auto 1fr auto',
@@ -203,6 +202,7 @@ export function Home() {
               background: '#12121a',
               border: '1px solid rgba(255,255,255,0.07)',
               borderRadius: 16,
+              textDecoration: 'none',
               transition: 'border-color 0.2s, background 0.2s, transform 0.2s',
               cursor: 'pointer',
             }}
@@ -215,12 +215,6 @@ export function Home() {
               e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)';
               e.currentTarget.style.background = '#12121a';
               e.currentTarget.style.transform = 'translateY(0)';
-            }}
-            onClick={() => navigation?.navigateTo(s.to)}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') navigation?.navigateTo(s.to);
             }}
           >
             <div
@@ -288,7 +282,7 @@ export function Home() {
             >
               →
             </span>
-          </div>
+          </a>
         ))}
       </div>
 
