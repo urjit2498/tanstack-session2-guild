@@ -1,5 +1,6 @@
 import { Suspense, useState } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { ErrorBoundary } from "react-error-boundary";
 import { queryKeys } from "../../lib/query-keys";
 import { fetchAllUsers, fetchStats } from "../../lib/fetch-utils";
@@ -160,8 +161,18 @@ function UserList() {
 </ErrorBoundary>`;
 
 export function SuspenseMode() {
+  const queryClient = useQueryClient();
   const [showDemo, setShowDemo] = useState(false);
   const [demoKey, setDemoKey] = useState(0);
+
+  const handleMountOrRemount = () => {
+    // Re-mount alone is not enough because data may be served from cache.
+    // Clearing these demo queries forces Suspense fallback to render again.
+    queryClient.removeQueries({ queryKey: queryKeys.users.all, exact: true });
+    queryClient.removeQueries({ queryKey: queryKeys.stats.all, exact: true });
+    setShowDemo(true);
+    setDemoKey((k) => k + 1);
+  };
 
   return (
     <div style={{ maxWidth: 900, margin: "0 auto", padding: "60px clamp(14px, 4vw, 24px)" }}>
@@ -261,7 +272,7 @@ export function SuspenseMode() {
 
         <div style={{ display: "flex", gap: 12, marginBottom: 24, flexWrap: "wrap" }}>
           <button
-            onClick={() => { setShowDemo(true); setDemoKey((k) => k + 1); }}
+            onClick={handleMountOrRemount}
             style={{
               padding: "10px 22px",
               background: "#f43f5e",
